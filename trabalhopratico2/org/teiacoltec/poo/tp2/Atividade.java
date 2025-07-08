@@ -44,4 +44,7 @@ public class Atividade{
         String informacoes = "Informacoes da atividade "+getnome()+":\nID: "+ getID() + "\nDescrição: "+getdescricao()+"\nInicio da atividade: "+getinicio()+"\nFim do Prazo: "+getfim();
         return informacoes;
     }
+    public int obterAtividadeporID(){
+        return getID();
+    }
 }
