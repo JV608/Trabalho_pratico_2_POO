@@ -12,13 +12,15 @@ public class Atividade{
     private LocalDate inicio;
     private LocalDate fim;
     private static DateTimeFormatter modelo = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-    public Atividade(int ID, String nome, String descricao, String inicio, String fim){
+    private float valor; 
+    
+    public Atividade(int ID, String nome, String descricao, String inicio, String fim, float valor){
         this.ID = ID;
         this.nome = nome;
         this.descricao = descricao;
         this.inicio = LocalDate.parse(inicio, modelo);
         this.fim = LocalDate.parse(fim, modelo);
+        this.valor = valor;
     }
     public int getID(){
         return ID;
@@ -35,6 +37,9 @@ public class Atividade{
     public LocalDate getfim(){
         return fim;
     }
+    public float getValor(){
+        return valor;
+    }    
     public String obterInformacoes(){
         String informacoes = "Informacoes da atividade "+getnome()+":\nID: "+ getID() + "\nDescrição: "+getdescricao()+"\nInicio da atividade: "+getinicio()+"\nFim do Prazo: "+getfim();
         return informacoes;
