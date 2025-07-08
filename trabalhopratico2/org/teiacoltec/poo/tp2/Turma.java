@@ -16,9 +16,9 @@ public class Turma{
     private  int countpart;
     private int countturmaf;
     private static DateTimeFormatter modelo = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private Atividade[] atividades = new Atividade[1];
 
-
-    public Turma(int ID, String nome, String descricao, String inicio, String fim, Pessoa[] participantes, Turma turma_pai){
+    public Turma(int ID, String nome, String descricao, String inicio, String fim, Pessoa[] participantes, Turma turma_pai, Atividade atividades){
         this(turma_pai);
         this.ID = ID;
         this.nome = nome;
@@ -28,6 +28,7 @@ public class Turma{
         this.participantes = participantes;
         this.countpart = 0;
         this.countturmaf = 0;
+        this.atividades = atividades;
     
     }
     private Turma(Turma turma_pai){
@@ -39,6 +40,9 @@ public class Turma{
     }
     public Pessoa[] getParticipantes(){
         return participantes;
+    }
+    public Atividade[] getAtividades(){
+        return atividades;
     }
     public Pessoa[] obtemListaParticipantes(){
         //Pessoa[] listadeparticipantes =new Pessoa[countpart]; 
