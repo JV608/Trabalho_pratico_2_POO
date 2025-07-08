@@ -150,5 +150,17 @@ public class Main {
         System.out.println("fim: " + atividade.getFim());
         
     }
+ 
+    
+    public static void imprimirInformacoes(Tarefa tarefa) {
+        
+        System.out.println("ID: " + tarefa.getID()); 
+        System.out.println("Aluno: " + tarefa.getAluno());
+        System.out.println("Turma: " + tarefa.getTurma());
+        System.out.println("Atividade: " + tarefa.getAtividade());
+        System.out.println("nota: " + tarefa.getNota());
+        
+    }
+
 
 }
