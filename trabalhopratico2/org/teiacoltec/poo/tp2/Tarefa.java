@@ -9,9 +9,8 @@ public class Tarefa{
     private int ID;
     private String nome;
     private String descricao;
-    private LocalDate inicio;
-    private LocalDate fim;
-    private static DateTimeFormatter modelo = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private float nota;
+    
 
     public Tarefa(int ID, String nome, String descricao, String inicio, String fim){
         this.ID = ID;
