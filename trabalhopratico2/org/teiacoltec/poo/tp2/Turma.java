@@ -41,9 +41,11 @@ public class Turma{
     public Pessoa[] getParticipantes(){
         return participantes;
     }
+    
     public Atividade[] getAtividades(){
         return atividades;
     }
+    
     public Pessoa[] obtemListaParticipantes(){
         //Pessoa[] listadeparticipantes =new Pessoa[countpart]; 
         //for(int i = 0; i < countpart; i++) {
