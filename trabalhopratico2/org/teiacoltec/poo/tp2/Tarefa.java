@@ -6,21 +6,23 @@ import java.time.format.DateTimeFormatter;
 
 
 public class Tarefa{
-    private int ID;
+    private int id;
     private String nome;
     private String descricao;
     private float nota;
+    private LocalDate inicio;
+    private LocalDate fim;
     
 
-    public Tarefa(int ID, String nome, String descricao, String inicio, String fim){
-        this.ID = ID;
+    public Tarefa(int id, String nome, String descricao, String inicio, String fim){
+        this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.inicio = LocalDate.parse(inicio, modelo);
         this.fim = LocalDate.parse(fim, modelo);
     }
-    public int getID(){
-        return ID;
+    public int getId(){
+        return id;
     }
     public String getnome(){
         return nome;
@@ -35,10 +37,10 @@ public class Tarefa{
         return fim;
     }
     public String obterInformacoes(){
-        String informacoes = "Informacoes da atividade "+getnome()+":\nID: "+ getID() + "\nDescrição: "+getdescricao()+"\nInicio da atividade: "+getinicio()+"\nFim do Prazo: "+getfim();
+        String informacoes = "Informacoes da atividade "+getnome()+":\nID: "+ getId() + "\nDescrição: "+getdescricao()+"\nInicio da atividade: "+getinicio()+"\nFim do Prazo: "+getfim();
         return informacoes;
     }
     public int obterTarefaPorID(){
-        return getID();
+        return getId();
     }
 }

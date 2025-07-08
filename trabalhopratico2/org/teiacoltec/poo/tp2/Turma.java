@@ -18,7 +18,7 @@ public class Turma{
     private static DateTimeFormatter modelo = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private Atividade[] atividades = new Atividade[1];
 
-    public Turma(int ID, String nome, String descricao, String inicio, String fim, Pessoa[] participantes, Turma turma_pai, Atividade atividades){
+    public Turma(int ID, String nome, String descricao, String inicio, String fim, Pessoa[] participantes, Turma turma_pai, Atividade[] atividades){
         this(turma_pai);
         this.ID = ID;
         this.nome = nome;
