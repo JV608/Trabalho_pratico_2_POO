@@ -69,4 +69,28 @@ public class Tarefa{
         return null;
     }
 
+    public static Tarefa[] obtemTarefasDaPessoa(Pessoa pessoa, List<Tarefa> todasAsTarefas) {
+        List<Tarefa> tarefasDaPessoa = new ArrayList<>();
+        for (Tarefa tarefa : todasAsTarefas) {
+            if (tarefa.getAluno().getCPF().equals(pessoa.getCPF())) {
+                tarefasDaPessoa.add(tarefa);
+            }
+        }
+        return tarefasDaPessoa.toArray(new Tarefa[0]);
+    }
+
+    public static Tarefa[] obtemTarefasDaPessoa(Pessoa pessoa, Date inicio, Date fim, List<Tarefa> todasAsTarefas) {
+        List<Tarefa> tarefasDaPessoa = new ArrayList<>();
+        for (Tarefa tarefa : todasAsTarefas) {
+            if (tarefa.getAluno().getCPF().equals(pessoa.getCPF())) {
+                Date dataAtividade = java.sql.Date.valueOf(tarefa.getAtividade().getinicio());
+                if (!dataAtividade.before(inicio) && !dataAtividade.after(fim)) {
+                    tarefasDaPessoa.add(tarefa);
+                }
+            }
+        }
+        return tarefasDaPessoa.toArray(new Tarefa[0]);
+    }
+}
+
 }
