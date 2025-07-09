@@ -92,5 +92,3 @@ public class Tarefa{
         return tarefasDaPessoa.toArray(new Tarefa[0]);
     }
 }
-
-}
