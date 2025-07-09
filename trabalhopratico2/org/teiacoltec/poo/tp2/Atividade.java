@@ -40,11 +40,16 @@ public class Atividade{
     public float getValor(){
         return valor;
     }    
-    public String obterInformacoes(){
-        String informacoes = "Informacoes da atividade "+getnome()+":\nID: "+ getID() + "\nDescrição: "+getdescricao()+"\nInicio da atividade: "+getinicio()+"\nFim do Prazo: "+getfim();
+     public String obterInformacoes() {
+        String informacoes = "Informacoes da atividade " + getnome() + ":\nID: " + getID() + "\nDescrição: "
+                + getdescricao() + "\nInicio da atividade: " + getinicio() + "\nFim do Prazo: " + getfim()
+                + "\nValor: " + getValor();
         return informacoes;
     }
-    public int obterAtividadeporID(){
-        return getID();
+    public Atividade obtemAtividadePorID(int id) {
+        if (this.ID == id) {
+            return this;
+        }
+        return null;
     }
 }
