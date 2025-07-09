@@ -1,44 +1,72 @@
 //copia de atividade
 package org.teiacoltec.poo.tp2;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
+import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Tarefa{
+    
     private int ID;
-    private String nome;
-    private String descricao;
+    private Aluno aluno;
+    private Turma turma;
+    private Atividade atividade;
     private float nota;
     
 
     public Tarefa(int ID, String nome, String descricao, String inicio, String fim){
+        public Tarefa(int ID, Aluno aluno, Turma turma, Atividade atividade) {
         this.ID = ID;
-        this.nome = nome;
-        this.descricao = descricao;
-        this.inicio = LocalDate.parse(inicio, modelo);
-        this.fim = LocalDate.parse(fim, modelo);
+        this.aluno = aluno;
+        this.turma = turma;
+        this.atividade = atividade;
     }
+        
     public int getID(){
         return ID;
     }
-    public String getnome(){
-        return nome;
+        
+    public void setID(int ID) {
+        this.ID = ID;
     }
-    public String getdescricao(){
-        return descricao;
+    
+    public Aluno getAluno() {
+        return aluno;
     }
-    public LocalDate getinicio(){
-        return inicio;
+
+    public void setAluno(Aluno aluno) {
+        this.aluno = aluno;
     }
-    public LocalDate getfim(){
-        return fim;
+
+    public Turma getTurma() {
+        return turma;
     }
-    public String obterInformacoes(){
-        String informacoes = "Informacoes da atividade "+getnome()+":\nID: "+ getID() + "\nDescrição: "+getdescricao()+"\nInicio da atividade: "+getinicio()+"\nFim do Prazo: "+getfim();
-        return informacoes;
+
+    public void setTurma(Turma turma) {
+        this.turma = turma;
     }
-    public int obterTarefaPorID(){
-        return getID();
+
+    public Atividade getAtividade() {
+        return atividade;
     }
+
+    public void setAtividade(Atividade atividade) {
+        this.atividade = atividade;
+    }
+
+    public float getNota() {
+        return nota;
+    }
+
+    public void setNota(float nota) {
+        this.nota = nota;
+    }
+
+    public Tarefa obtemTarefaPorID(int id) {
+        if (this.ID == id) {
+            return this;
+        }
+        return null;
+    }
+
 }
