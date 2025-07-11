@@ -1,0 +1,132 @@
+// inicio e fim da main está a porra da serialização, beleza?
+// se estiver beleza parabéns mesmo, muito parabéns
+
+
+package org.teiacoltec.poo;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Random;
+
+public class Main {
+
+    public static void exibirAnimal(Animal animal){
+
+            animal.emitirSom();
+            System.out.println(animal.getNome());
+            System.out.println(animal.getIdade());
+
+        }
+
+    public static Animal AnimalAleatorio(){
+        Random random = new Random();
+        int tipo = random.nextInt(6);
+        int id = random.nextInt(10000);
+        switch (tipo) {
+            case 0:
+                return new Mamifero("Mamifero" + id, "xrxrxrxr", random.nextInt(80), "Peludo");
+            case 1:
+                return new Ave("Ave" + id, "xxxxxxxx", random.nextInt(15), random.nextDouble());
+            case 2:
+                return new Reptil("Reptil" + id, "vrvrvrvrvr", random.nextInt(70), "Escamoso");
+            case 3:
+                return new Mamifero("Mamifero" + id, "orororororo", random.nextInt(80), "Macio");
+            case 4:
+                return new Ave("Ave" + id, "zzziii", random.nextInt(15), random.nextDouble());
+            case 5:
+                return new Reptil("Reptil" + id, "rrrrrrrrrr", random.nextInt(70), "Aspera");
+            default:
+                return null;
+        }
+    }
+
+        public static void main(String[] args) {
+
+            ArrayList<Zoologico> listaZoologicos = new ArrayList<>(); 
+
+            try {
+            FileInputStream fileIn = new FileInputStream("zoologicos.ser");
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            listaZoologicos = (ArrayList<Zoologico>) in.readObject();
+            in.close();
+            fileIn.close();
+            } catch (FileNotFoundException e) {
+                System.out.println("Arquivo não encontrado");
+            } catch (IOException e) {
+                System.out.println("Erro de entrada/saída");
+            } catch (ClassNotFoundException e) {
+                System.out.println("Classe não encontrada");
+            }
+            
+            //Os 3 zoológicos criados.
+            for(int i = 1; i <= 3; i++){
+            Zoologico NewZoologico = new Zoologico();
+     
+            try {
+            for (int j = 0; j < 10; j++) {
+            NewZoologico.adicionarAnimal(AnimalAleatorio());
+            } 
+            } catch (JaExisteAnimalException e) {
+            System.out.println("Animal já existe no zoológico! Não será adicionado.");
+            }
+            
+            listaZoologicos.add(NewZoologico);
+            }
+
+            //printando os animais do zoológico.
+            for (int i = 0; i < listaZoologicos.size(); i++) {
+            System.out.println("\nAnimais do Zoológico " + (i + 1) + ":");
+            listaZoologicos.get(i).listarAnimais();
+            }
+            System.out.println();
+
+            //removendo no zoológico 1.
+            System.out.println("Removendo Animal...");
+            try {
+                listaZoologicos.get(0).removerAnimal("Mamifero6542");
+            }
+            catch (AnimalNaoEncontradoException e) {
+                System.out.println("Animal não encontrado!");
+            }
+            System.out.println();
+
+            //buscando o animal removido.
+            System.out.println("Buscando animal removido:");
+            try {
+            Animal encontrado = listaZoologicos.get(0).buscarAnimal("Mamifero6542");
+            encontrado.emitirSom();
+            }
+            catch (AnimalNaoEncontradoException e) {
+                System.out.println("Animal não encontrado!");
+            }
+            System.out.println();
+            
+            //testes anteriores.
+            /*Gato Bob = new Gato("Bob", "miau", 2, "macio");
+            Aguia Thor = new Aguia("Thor", "xxxxx", 2, 2.2);
+            Elefante Osvaldo = new Elefante("Osvaldo", "pruu", 4, "dura");
+            Carpa Armaldo = new Carpa("Armaldo", "shh", 3);
+
+            exibirAnimal(Bob);
+            exibirAnimal(Thor);
+            exibirAnimal(Osvaldo);
+            exibirAnimal(Armaldo);*/
+       
+            try {
+            FileOutputStream fileOut = new FileOutputStream("zoologicos.ser");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(listaZoologicos);
+            out.close();
+            fileOut.close();
+            }
+            catch (IOException e) {
+            System.out.println("Erro ao salvar zoológicos");
+            }
+    
+    }
+}
