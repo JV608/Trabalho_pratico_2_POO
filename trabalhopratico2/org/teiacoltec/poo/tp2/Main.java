@@ -1,166 +1,203 @@
-//codigo igual ao do gabriel a principio 
 package org.teiacoltec.poo.tp2;
 
+
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList; 
+import java.util.List;
+import java.util.Scanner; 
 
 public class Main {
 
+    private static List<Turma> listaDeTurmas = new ArrayList<>();
+    private static List<Pessoa> listaDePessoas = new ArrayList<>();
+    private static List<Atividade> listaDeAtividades = new ArrayList<>();
+    private static List<Tarefa> listaDeTarefas = new ArrayList<>();
+    private static int proximoIdTarefa = 1;
+    private static DateTimeFormatter formatadorDeData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
     public static void main(String[] args) {
+        popularDadosIniciais();
+
+        Scanner scanner = new Scanner(System.in);
+        int opcaoEscolhida = -1; 
+
+        while (opcaoEscolhida != 0) {
+            exibirMenuPrincipal(); 
+            try {
+                opcaoEscolhida = Integer.parseInt(scanner.nextLine());
+
+                switch (opcaoEscolhida) {
+                    case 1:
+                        criarTarefaParaTurma(scanner);
+                        break;
+                    case 2:
+                        adicionarPessoaNaTurma(scanner);
+                        break;
+                    case 3:
+                        listarParticipantesDaTurma(scanner);
+                        break;
+                    case 0:
+                        System.out.println("Obrigado! Volte sempre!");
+                        break;
+                    default:
+                        System.out.println("Opção inválida. Por favor, escolha um número do menu.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Erro: Por favor, digite apenas números.");
+            } catch (Exception e) {
+              
+                System.out.println("Ops! Algo deu errado: " + e.getMessage());
+            }
+        }
+
+        scanner.close(); 
+    }
+
+
+    private static void exibirMenuPrincipal() {
+        System.out.println("\n===== BEM-VINDO AO SISTEMA DA ESCOLA =====");
+        System.out.println("1. Criar e associar uma nova tarefa para uma turma");
+        System.out.println("2. Adicionar uma pessoa a uma turma");
+        System.out.println("3. Ver quem está em uma turma");
+        System.out.println("0. Sair do Sistema");
+        System.out.print("Digite sua opção: ");
+    }
+
+    private static void criarTarefaParaTurma(Scanner scanner) {
+        System.out.println("\n--- Receita: Criar Nova Tarefa ---");
+        System.out.print("Primeiro, qual o ID da turma? ");
+        int idTurma = Integer.parseInt(scanner.nextLine());
+
+        
+        Turma turma = buscarTurmaPorId(idTurma);
+        if (turma == null) {
+            System.out.println("Erro: Não achei nenhuma turma com o ID " + idTurma);
+            return;
+        }
+
+        
+        System.out.print("Nome da Atividade: ");
+        String nomeAtividade = scanner.nextLine();
+        System.out.print("Descrição: ");
+        String descAtividade = scanner.nextLine();
+        System.out.print("Data de Início (dd/MM/yyyy): ");
+        String inicioAtividade = scanner.nextLine();
+        System.out.print("Data de Fim (dd/MM/yyyy): ");
+        String fimAtividade = scanner.nextLine();
+        System.out.print("Valor (pontos): ");
+        float valorAtividade = Float.parseFloat(scanner.nextLine());
+
     
-    Pessoa[] Participantes;
+        Atividade novaAtividade = new Atividade(listaDeAtividades.size() + 1, nomeAtividade, descAtividade, inicioAtividade, fimAtividade, valorAtividade);
+        listaDeAtividades.add(novaAtividade); 
 
-     Professor Junior = new Professor("17270131232", "Junior", LocalDate.of(1978,7,1), "juninhoGamer@hotmail.com", "Rua Peralta N401", "2031041", "Físico");
-     Aluno Gabriel = new Aluno("42002941431", "Gabriel", LocalDate.of(2008,2,11), "a2024952008@teiacoltec.org", "Rua Matheus Pereira N10", "2024952008", "Desenvolvimento de Sistemas");
-     Aluno Marco = new Aluno("62342412155", "Marco", LocalDate.of(2007,6,1), "marco0810@gmail.com", "Rua Peralta N21", "9841000", "Desenvolvimento de Sistemas");
-     Atividade TP1 = new Atividade(01, "Livro Didático", "Páginas 20 a 25", LocalDate.of(2025,5,12), LocalDate.of(2025,5,18));
-     Turma A203 = new Turma(03, "203", "Turma de Desenvolvimento de Sistemas - COLTEC-UFMG", LocalDate.of(2025,1,1), LocalDate.of(2025,12,25), null, null, null);
-     Turma subturmaA = new Turma(A203);
-     Turma subturmaB = new Turma(A203);
-     
-     subturmaA.setNome("SubturmaA");
-     subturmaA.setDescricao("Subturma A da 203");
-     subturmaB.setNome("SubturmaB");
-     subturmaA.setDescricao("Subturma B da 203");
+        
+        turma.associaAtividade(novaAtividade);
+        System.out.println("Ok! Atividade '" + nomeAtividade + "' associada à turma '" + turma.getNome() + "'.");
 
-     Turma[] TurmasFilhas = A203.getTurmasFilhas();
-     System.out.println("As turmas filhas associadas:\n");
-     System.out.print("[");
-     for(int i=0; i<TurmasFilhas.length; i++){
+        
+        ArrayList<Aluno> alunosDaTurma = turma.obtemListaAlunos(true);
+        if (alunosDaTurma.isEmpty()) {
+            System.out.println("Aviso: Esta turma não tem alunos. Nenhuma tarefa foi criada.");
+            return;
+        }
 
-     System.out.print(TurmasFilhas[i].getNome());
-     if(i != TurmasFilhas.length - 1){
-     System.out.print(", ");
-     }     
-     }
-     System.out.print("]\n");
-
-     System.out.println("\nObtendo informações da pessoa, por meio do método obter informações:");
-     String informações = Gabriel.obterInformacoes();
-     System.out.println(informações + "\n");
-
-     System.out.println("Informações do Aluno:");
-     imprimirInformacoes(Gabriel);
-     System.out.println("\nInformações do Professor:");
-     imprimirInformacoes(Junior);
-     System.out.println("\nInformações da Atividade:");
-     imprimirInformacoes(TP1);
-     System.out.println();
-
-     try {
-      A203.adicionarParticipante(Gabriel);
-     } catch (PessoaJaParticipanteException e) {
-        System.out.println("Erro: A pessoa já está participando da turma.");
-       }
-
-        try {
-      A203.adicionarParticipante(Junior);
-     } catch (PessoaJaParticipanteException e) {
-        System.out.println("Erro: A pessoa já está participando da turma.");
-       }
-
-       boolean participa;
-       participa = A203.participa(Gabriel);
-       System.out.println("Gabriel faz parte dos participantes após adição? : " + participa);
-
-       participa = A203.participa(Junior);
-       System.out.println("Junior faz parte dos participantes após adição? : " + participa);
-
-       Participantes = A203.obtemListaParticipantes();
-       System.out.println("\nParticipantes após as adições de pessoas: \n");
        
-       System.out.print("[");
-       for(int i=0; i<Participantes.length; i++){
+        for (Aluno aluno : alunosDaTurma) {
+            Tarefa novaTarefa = new Tarefa(proximoIdTarefa++, aluno, turma, novaAtividade);
+            listaDeTarefas.add(novaTarefa);
+        }
 
-       System.out.print(Participantes[i].getNome());
-       if(i != Participantes.length - 1){
-        System.out.print(", ");
-       }
-       }
-       System.out.print("]\n");
-
-       try {
-      A203.removerParticipante(Junior);
-     } catch (PessoaNaoEncontradaException e) {
-        System.out.println("Erro: A pessoa não foi encontrada na Turma.");
-       }
-
-       Participantes = A203.obtemListaParticipantes();
-       System.out.println("\nParticipantes após a remoção: \n");
-
-       System.out.print("[");
-       for(int i=0; i<Participantes.length; i++){
-
-       System.out.print(Participantes[i].getNome());
-       if(i != Participantes.length - 1){
-        System.out.print(", ");
-       }
-       }
-       System.out.print("]");
-
-       participa = A203.participa(Gabriel);
-       System.out.println("\n\nGabriel faz parte dos participantes após remoção? : " + participa);
-
-       participa = A203.participa(Junior);
-       System.out.println("Junior faz parte dos participantes após remoção? : " + participa);
-
-       System.out.println("\nTeste do erro PessoaJaParticipanteException:");
-
-       try {
-       A203.adicionarParticipante(Gabriel);
-       } catch (PessoaJaParticipanteException e) {
-        System.out.println("Erro: A pessoa já está participando da turma.");
-       }
-
-       System.out.println("\nTeste do erro PessoaNaoEncontradaException:");
-
-       try {
-       A203.removerParticipante(Marco);
-       } catch (PessoaNaoEncontradaException e) {
-        System.out.println("Erro: A pessoa não foi encontrada na Turma.");
-       }
-
+        System.out.println("Sucesso! " + alunosDaTurma.size() + " tarefas foram criadas para os alunos.");
     }
 
-    public static void imprimirInformacoes(Pessoa pessoa) {
-        
-        System.out.println("CPF: " + pessoa.getCPF()); 
-        System.out.println("nome: " + pessoa.getNome());
-        System.out.println("nascimento: " + pessoa.getNascimento());
-        System.out.println("email: " + pessoa.getEmail());
-        System.out.println("endereço: " + pessoa.getEndereco());
-        
+
+    private static void adicionarPessoaNaTurma(Scanner scanner) {
+         System.out.println("\n--- Receita: Matricular Pessoa na Turma ---");
+         System.out.print("Qual o CPF da pessoa? ");
+         String cpf = scanner.nextLine();
+         System.out.print("Qual o ID da turma? ");
+         int idTurma = Integer.parseInt(scanner.nextLine());
+
+         try {
+             Pessoa pessoa = buscarPessoaPorCpf(cpf);
+             Turma turma = buscarTurmaPorId(idTurma);
+
+             if (pessoa == null || turma == null) {
+                 System.out.println("Erro: Pessoa ou Turma não encontrada. Verifique o CPF e o ID.");
+                 return;
+             }
+            
+             turma.adicionarParticipante(pessoa);
+             System.out.println("Sucesso! " + pessoa.getnome() + " foi adicionado(a) à turma " + turma.getNome() + ".");
+
+         } catch (PessoaJaParticipanteException e) {
+              System.out.println("Erro: Essa pessoa já está nessa turma!");
+         } catch (Exception e) {
+             System.out.println("Erro ao adicionar: " + e.getMessage());
+         }
     }
 
-    public static void imprimirInformacoes(Turma turma) {
-        
-        System.out.println("ID: " + turma.getID()); 
-        System.out.println("nome: " + turma.getNome());
-        System.out.println("descrição: " + turma.getDescricao());
-        System.out.println("início: " + turma.getInicio());
-        System.out.println("fim: " + turma.getFim());
-        
-    }
 
-    public static void imprimirInformacoes(Atividade atividade) {
+    private static void listarParticipantesDaTurma(Scanner scanner) {
+        System.out.println("\n--- Receita: Ver a Chamada da Turma ---");
+        System.out.print("Qual o ID da Turma? ");
+        int idTurma = Integer.parseInt(scanner.nextLine());
         
-        System.out.println("ID: " + atividade.getID()); 
-        System.out.println("nome: " + atividade.getNome());
-        System.out.println("descrição: " + atividade.getDescricao());
-        System.out.println("início: " + atividade.getInicio());
-        System.out.println("fim: " + atividade.getFim());
+        Turma turma = buscarTurmaPorId(idTurma);
+        if (turma == null) {
+            System.out.println("Erro: Turma não encontrada.");
+            return;
+        }
+
+        ArrayList<Pessoa> participantes = turma.obtemListaParticipantes();
+        if (participantes.isEmpty()) {
+            System.out.println("A turma '" + turma.getNome() + "' está vazia.");
+            return;
+        }
         
+        System.out.println("----- Participantes da Turma: " + turma.getNome() + " -----");
+        for(Pessoa p : participantes){
+            String tipo = p instanceof Aluno ? "Aluno" : "Professor";
+            System.out.println("- " + p.getnome() + " (Cargo: " + tipo + ")");
+        }
     }
- 
     
-    public static void imprimirInformacoes(Tarefa tarefa) {
-        
-        System.out.println("ID: " + tarefa.getID()); 
-        System.out.println("Aluno: " + tarefa.getAluno());
-        System.out.println("Turma: " + tarefa.getTurma());
-        System.out.println("Atividade: " + tarefa.getAtividade());
-        System.out.println("nota: " + tarefa.getNota());
-        
+
+    private static Turma buscarTurmaPorId(int id) {
+        for (Turma t : listaDeTurmas) {
+            if (t.getID() == id) {
+                return t; 
+            }
+        }
+        return null; 
     }
 
+    private static Pessoa buscarPessoaPorCpf(String cpf) {
+        for (Pessoa p : listaDePessoas) {
+            if (p.getCPF().equals(cpf)) {
+                return p; 
+            }
+        }
+        return null; 
+    }
+    
+    /**
+     * Apenas cria alguns dados falsos para que o programa não comece vazio
+     * e possamos testar as funcionalidades sem ter que cadastrar tudo toda vez.
+     */
+    private static void popularDadosIniciais() {
 
+        Aluno aluno1 = new Aluno("111", "João Silva", "10/05/2007", "joao@email.com", "Rua A", "A01", "DS");
+        Aluno aluno2 = new Aluno("222", "Maria Santos", "15/03/2008", "maria@email.com", "Rua B", "A02", "DS");
+        Professor prof1 = new Professor("333", "Carlos Souza", "20/08/1985", "carlos@email.com", "Rua C", "P01", "POO");
+        listaDePessoas.addAll(List.of(aluno1, aluno2, prof1));
+
+ 
+        Turma turma1 = new Turma(101, "203-A", "Manhã", LocalDate.now(), LocalDate.now().plusMonths(6), null, null, null, null);
+        listaDeTurmas.add(turma1);
+        
+        System.out.println("Dados iniciais carregados: 2 alunos, 1 professor e 1 turma (ID 101).");
+    }
 }
